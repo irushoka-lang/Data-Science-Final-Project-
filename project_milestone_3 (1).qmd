@@ -1,0 +1,159 @@
+---
+title: "Project Milestone 3: Preliminary progress report"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+---
+
+```{r include = FALSE}
+# This chunk just sets up some styling (eg: default size of our images)
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  warning = FALSE,
+  message = FALSE,
+  fig.height = 2.75, 
+  fig.width = 4.25,
+  fig.align = 'center')
+```
+
+\
+
+**NOTE**
+
+This progress report represents the *minimum* progress you need to make in order to stay on track. You're encouraged to do more, if possible. For example:
+
+-   Though your responses to *this* progress report can be informal, take some time to:
+    -   Edit written responses as they might appear in your final report.
+    -   Edit code and plots as they might appear in your final report (eg: use figure captions, alt text, color-blind friendly palettes, etc).
+-   Make more plots! Do more wrangling! Learn new things!
+
+\
+\
+
+# Names
+
+Put the full names (first and last) of every group member here.
+Gaby Moreno Romero 
+Kampe Rushoka
+Val Tlahuice
+
+
+\
+\
+
+# 1. Background
+
+In this section, specify:
+
+-   The overarching **research question** for your project. You will break this down into smaller pieces in your analysis, but should have a general guiding question.
+
+-   Specify your data sources, including *where* you found your dataset(s) and who *originally* collected the data. If possible, also identify the original purpose for this data collection.
+
+Put your work below:
+
+RQ: How have demographics (Sex, Race) and education levels affected Americans wages over time? 
+
+Data source: The Wages by Education dataset was found from Kaggle and provides provides hourly wages by the highest level of education attained for wage and salary workers aged 16 and older in the USA and disagregated for other demographic factors such as sex (Male and Female) and ethnicities(White, Black, and Hispanic). The data is adjusted into 2022 dollars using the CPI-U-RS index, to acount for inflation. It covers the years from 1973 to 2022 and is sourced from the Economic Policy Institute’s State of Working America Data Library. It is important to note some demographics such as asian, indigenous, non-binary and trans identities are missing. 
+
+
+
+
+
+
+\
+\
+\
+\
+
+# 2. Preliminary data checks and cleaning
+
+In this section:
+
+-   Import your dataset(s).
+
+-   Do a preliminary data check. For *example*, identify:
+
+    -   units of observation
+    -   how many data points you have
+    -   the number of variables and types of things that were measured
+
+-   Do any preliminary data cleaning that's necessary to start your analysis. For example:
+
+    -   define / clean the variables you plan to use in your analysis
+    -   obtain some simple summaries of the variables you plan to use in your analysis
+    -   as necessary:
+        -   reshape the data
+        -   join datasets
+
+Put your work below:
+
+```{r}
+library(readr)
+
+wages_data  <- read_csv("~/Documents/DS 112/Projects/wages_by_education.csv")
+head(wages_data)
+
+nrow(wages_data)
+
+#summary(wages_data)
+
+```
+Do a preliminary data check. For *example*, identify:
+
+    -   units of observation : Hourly wages per year 
+    -   how many data points you have : 50 years from 1973-2022
+    -   the number of variables and types of things that were measured
+
+-   Do any preliminary data cleaning that's necessary to start your analysis. For example:
+
+    -   define / clean the variables you plan to use in your analysis
+    -   obtain some simple summaries of the variables you plan to use in your analysis
+    -   as necessary:
+        -   reshape the data
+        -   join datasets
+
+\
+\
+\
+\
+
+# 3. Preliminary analysis (OPTIONAL)
+
+In this section, you are encouraged to build and perhaps discuss some plots *and* numerical summaries that address your research question(s). Though this section technically isn't required, any extra analysis you do now will support and simplify your future work.
+
+Put your work below:
+
+\
+\
+\
+\
+
+# 4. Vision
+
+Remember that growth and depth are key components of the final project assessment. Identify here what types of tools / skills do you plan to learn throughout the course of this project (or perhaps even what new things you already learned)! Revisit the project overview for ideas.
+
+Put your work below:
+
+\
+\
+\
+\
+
+# 5. Reflection form
+
+Only after you've completed items 1--4 above, each individual group member must fill out this [reflection form](https://forms.gle/xCtgxM2fxYjcCJvn6).
+
+
+Missing ethnicities(Asian Americans, Asians, Indigenous communities) and gender(Non-binary, trans...)
+
+\
+\
+\
+\
+
+# Wrapping up
+
+-   Render your qmd to html, check/fix the formatting, then submit the html!
+-   Remember that this progress report represents the *minimum* progress you need to make in order to stay on track. You're encouraged to do more, if possible. Ideas are outlined at the top of this assignment.
