@@ -35,9 +35,9 @@ This progress report represents the *minimum* progress you need to make in order
 # Names
 
 Put the full names (first and last) of every group member here.
-Gaby Moreno Romero 
-Kampe Rushoka
-Val Tlahuice
+-Gaby Moreno Romero 
+-Kampe Rushoka
+-Val Tlahuice
 
 
 \
@@ -89,28 +89,47 @@ In this section:
 
 Put your work below:
 
+Preliminary Data:
+- Units of observation: Aggregated demographic-year wages within the U.S.
+
+- Number of data points: 4,500 entries (each representing a unique demographic-year combination).
+
+- Variables measured: Demographic information: Categories such as race (Black, White), education level (less than high school), gender (women), and all possible combinations, Year: The year in which the wage data was measured, Wages: Hourly wages adjusted to 2022 dollars. 
+
+
+
+Preliminary data cleaning and refinement:
+We defined and cleaned the variables to ensure consistency for analysis. We also combined both median and average wage data from the Economic Policy Institute. This helps reduce the influence of extreme values, as averages can be skewed by very high or very low wages. Lastly we pivoted the data to a longer format to capture all demographic-year combinations efficiently. The dataset spans 1973–2022, with wages ranging from $10.74 to $64.04 per hour.
+
 ```{r}
+library(readr)
 library(dplyr)
+library(tidyverse)
 
-demographic_data <-read.csv("~/Desktop/DS112/Project/wages_by_education.csv")
 
-median_wage <- read.csv("~/Desktop/DS112/Project/median_average_wages.csv")
-Combined_data <- left_join(median_wage,demographic_data, by = "year") 
+#demographic_data <- read_csv("~/Documents/DS 112/Projects/wages_by_education.csv")
+
+demographic_data <- read_csv("wages_by_education.csv")
+
+#median_wage <- read_csv("~/Documents/DS 112/Projects/median_average_wages 3.csv")
+
+median_wage <- read_csv("median_average_wages 3.csv")
+
+
+Combined_data <- left_join(median_wage,demographic_data, by = "year") %>% 
+  arrange(year)
+
+head(Combined_data, 3)
+
+
+#Cleaned data with: Full Pivot longer of all demographic indicators
+cleaned_data_1 <- Combined_data %>% 
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages")
+
+head(cleaned_data_1, 15)
+nrow(cleaned_data_1)
+summary(cleaned_data_1) 
 ```
-Do a preliminary data check. For *example*, identify:
-
-    -   units of observation : Hourly wages per year 
-    -   how many data points you have : 50 years from 1973-2022
-    -   the number of variables and types of things that were measured
-
--   Do any preliminary data cleaning that's necessary to start your analysis. For example:
-
-    -   define / clean the variables you plan to use in your analysis
-    -   obtain some simple summaries of the variables you plan to use in your analysis
-    -   as necessary:
-        -   reshape the data
-        -   join datasets
-
 
 
 
@@ -121,12 +140,56 @@ Do a preliminary data check. For *example*, identify:
 
 # 3. Preliminary analysis (OPTIONAL)
 
-demograph
+
 
 In this section, you are encouraged to build and perhaps discuss some plots *and* numerical summaries that address your research question(s). Though this section technically isn't required, any extra analysis you do now will support and simplify your future work.
 
 Put your work below:
+Preliminary Analysis of Wage Trends
 
+Gender Differences: In the gender graph, men consistently earn more than women, although the gender wage gap has narrowed over time. The trend lines show that while both groups experience general wage growth, women’s wages have increased at a slightly faster rate, helping to reduce—but not eliminate—the disparity.
+
+Racial: In the race/ethnicity graph, White men have the highest median wages, with a clear gap above other groups. Black and Hispanic median wages are noticeably lower but relatively close to each other. While all groups exhibit some upward wage movement over time, the relative ranking between them remains stable, indicating persistent racial  wage disparties.
+
+Education Level Differences: The education-level graph shows a strong and consistent pattern: higher education is associated with higher wages. The wage hierarchy follows the expected order:Advanced degree holders earn the highest wages, Bachelor’s degree holders follow, Some college, high school, and less than high school form a lower cluster with wages in a relatively similar and lower range.
+
+Notably, the groups with lower education levels do not show the same long-term upward trend as other demographics. Instead, wages for individuals with less than high school, high school, or some college education have experienced a small but concerning decline over the years, emphasizing widening wage inequality by education level.
+```{r}
+#Gender 
+cleaned_data_3 <- Combined_data %>% 
+  select(men_median, women_median, year) %>%
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") 
+  
+ggplot(cleaned_data_3, aes(x = year, y = Wages, color = demographic)) + 
+  geom_point() + 
+  geom_line()+ 
+    labs(title = "Wage Trends by Gender (1973–2022)")
+  
+#Race
+cleaned_data_4 <- Combined_data %>% 
+  select(white_median, black_median, hispanic_median, year) %>%
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") 
+
+ggplot(cleaned_data_4, aes(x = year, y = Wages, color = demographic)) + 
+  geom_point() + 
+  geom_line() + 
+    labs(title = "Wage Trends by Race (1973–2022)")
+
+  
+  
+#Education: 
+
+cleaned_data_5 <- Combined_data %>% 
+  select(less_than_hs, high_school, some_college, bachelors_degree, advanced_degree, year) %>%
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") 
+
+ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) + 
+  geom_point() + 
+  geom_line() + 
+  labs(title = "Wage Trends by Education Level (1973–2022)")
+
+
+```
 \
 \
 \
@@ -137,6 +200,10 @@ Put your work below:
 Remember that growth and depth are key components of the final project assessment. Identify here what types of tools / skills do you plan to learn throughout the course of this project (or perhaps even what new things you already learned)! Revisit the project overview for ideas.
 
 Put your work below:
+
+One major area of improvement is learning how to reshape datasets. Specifically, understanding how to use pivot longer/ wider and joints more confidently, since those have been some of the trickiest parts of the course for me. 
+Also, we can  improve my interpretation of wage trends by connecting statistical patterns to broader social and economic contexts in the United States. For this, it is important to also improve how to create clear and comparative visualization, especially when we have plots that show differences across sex, race, and education levels at the same time.
+Finally, we want to be mindful about missing groups (such as Asian, Indigenous, non-binary) when interpreting results. As we continue, we want to strengthen both the technical R skills and the critical reasoning needed to analyze wage inequality over time.
 
 \
 \

@@ -3135,18 +3135,20 @@ vertical-align: -.125em;
 </p>
 <section id="names" class="level1">
 <h1>Names</h1>
-<ul>
-<li>Gaby Moreno Romero</li>
-<li>Kampe Rushoka</li>
-<li>Val Tlahuice</li>
-</ul>
+<p>Put the full names (first and last) of every group member here. -Gaby Moreno Romero -Kampe Rushoka -Val Tlahuice</p>
 <p><br>
 <br>
 </p>
 </section>
 <section id="background" class="level1">
 <h1>1. Background</h1>
-<p>RQ: How have demographics like Sex, Race and education levels affected Americans wages over time?</p>
+<p>In this section, specify:</p>
+<ul>
+<li><p>The overarching <strong>research question</strong> for your project. You will break this down into smaller pieces in your analysis, but should have a general guiding question.</p></li>
+<li><p>Specify your data sources, including <em>where</em> you found your dataset(s) and who <em>originally</em> collected the data. If possible, also identify the original purpose for this data collection.</p></li>
+</ul>
+<p>Put your work below:</p>
+<p>RQ: How have demographics (Sex, Race) and education levels affected Americans wages over time?</p>
 <p>Data source: The Wages by Education dataset was found from Kaggle and provides provides hourly wages by the highest level of education attained for wage and salary workers aged 16 and older in the USA and disagregated for other demographic factors such as sex (Male and Female) and ethnicities(White, Black, and Hispanic). The data is adjusted into 2022 dollars using the CPI-U-RS index, to acount for inflation. It covers the years from 1973 to 2022 and is sourced from the Economic Policy Institute’s State of Working America Data Library. It is important to note some demographics such as asian, indigenous, non-binary and trans identities are missing.</p>
 <p><br>
 <br>
@@ -3156,6 +3158,27 @@ vertical-align: -.125em;
 </section>
 <section id="preliminary-data-checks-and-cleaning" class="level1">
 <h1>2. Preliminary data checks and cleaning</h1>
+<p>In this section:</p>
+<ul>
+<li><p>Import your dataset(s).</p></li>
+<li><p>Do a preliminary data check. For <em>example</em>, identify:</p>
+<ul>
+<li>units of observation</li>
+<li>how many data points you have</li>
+<li>the number of variables and types of things that were measured</li>
+</ul></li>
+<li><p>Do any preliminary data cleaning that’s necessary to start your analysis. For example:</p>
+<ul>
+<li>define / clean the variables you plan to use in your analysis</li>
+<li>obtain some simple summaries of the variables you plan to use in your analysis</li>
+<li>as necessary:
+<ul>
+<li>reshape the data</li>
+<li>join datasets</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Put your work below:</p>
 <p>Preliminary Data: - Units of observation: Aggregated demographic-year wages within the U.S.</p>
 <ul>
 <li><p>Number of data points: 4,500 entries (each representing a unique demographic-year combination).</p></li>
@@ -3168,65 +3191,68 @@ vertical-align: -.125em;
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>demographic_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;~/Documents/DS 112/Projects/wages_by_education.csv&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#demographic_data &lt;- read_csv(&quot;~/Documents/DS 112/Projects/wages_by_education.csv&quot;)</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>median_wage <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;~/Documents/DS 112/Projects/median_average_wages 3.csv&quot;</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>demographic_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;wages_by_education.csv&quot;</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#median_wage &lt;- read_csv(&quot;~/Documents/DS 112/Projects/median_average_wages 3.csv&quot;)</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Combined_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(median_wage,demographic_data, <span class="at">by =</span> <span class="st">&quot;year&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>median_wage <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;median_average_wages 3.csv&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Combined_data, <span class="dv">3</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 91</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">##    year median average men_median men_average women_median women_average</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  1973   19.8    23.0       24          27.0         15.1          17.3</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  1974   19.4    22.6       23.7        26.5         14.9          17.0</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  1975   19.4    22.6       24.1        26.5         15.1          17.2</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 84 more variables: white_median &lt;dbl&gt;, white_average &lt;dbl&gt;,</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_median &lt;dbl&gt;, black_average &lt;dbl&gt;, hispanic_median &lt;dbl&gt;,</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">## #   hispanic_average &lt;dbl&gt;, white_men_median &lt;dbl&gt;, white_men_average &lt;dbl&gt;,</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_men_median &lt;dbl&gt;, black_men_average &lt;dbl&gt;, hispanic_men_median &lt;dbl&gt;,</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="do">## #   hispanic_men_average &lt;dbl&gt;, white_women_median &lt;dbl&gt;,</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## #   white_women_average &lt;dbl&gt;, black_women_median &lt;dbl&gt;,</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_women_average &lt;dbl&gt;, hispanic_women_median &lt;dbl&gt;, …</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Cleaned data with: Full Pivot longer of all demographic indicators</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>cleaned_data_1 <span class="ot">&lt;-</span> Combined_data <span class="sc">%&gt;%</span> </span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>year , <span class="at">names_to =</span> <span class="st">&quot;demographic&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Wages&quot;</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleaned_data_1, <span class="dv">15</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 15 × 3</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="do">##     year demographic       Wages</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="do">##  1  1973 median             19.8</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="do">##  2  1973 average            23.0</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  3  1973 men_median         24  </span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="do">##  4  1973 men_average        27.0</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="do">##  5  1973 women_median       15.1</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="do">##  6  1973 women_average      17.3</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="do">##  7  1973 white_median       20.5</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="do">##  8  1973 white_average      23.7</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="do">##  9  1973 black_median       16.0</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="do">## 10  1973 black_average      18.6</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="do">## 11  1973 hispanic_median    16.4</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="do">## 12  1973 hispanic_average   18.7</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="do">## 13  1973 white_men_median   25.0</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 14  1973 white_men_average  27.9</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 15  1973 black_men_median   19.3</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cleaned_data_1)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4500</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleaned_data_1) </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="do">##       year      demographic            Wages      </span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :1973   Length:4500        Min.   :10.74  </span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:1985   Class :character   1st Qu.:17.64  </span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :1998   Mode  :character   Median :21.66  </span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :1998                      Mean   :24.41  </span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:2010                      3rd Qu.:29.00  </span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :2022                      Max.   :64.04  </span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="do">##                                    NA&#39;s   :96</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Combined_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(median_wage,demographic_data, <span class="at">by =</span> <span class="st">&quot;year&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Combined_data, <span class="dv">3</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 91</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="do">##    year median average men_median men_average women_median women_average</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  1973   19.8    23.0       24          27.0         15.1          17.3</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  1974   19.4    22.6       23.7        26.5         14.9          17.0</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  1975   19.4    22.6       24.1        26.5         15.1          17.2</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 84 more variables: white_median &lt;dbl&gt;, white_average &lt;dbl&gt;,</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_median &lt;dbl&gt;, black_average &lt;dbl&gt;, hispanic_median &lt;dbl&gt;,</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## #   hispanic_average &lt;dbl&gt;, white_men_median &lt;dbl&gt;, white_men_average &lt;dbl&gt;,</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_men_median &lt;dbl&gt;, black_men_average &lt;dbl&gt;, hispanic_men_median &lt;dbl&gt;,</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="do">## #   hispanic_men_average &lt;dbl&gt;, white_women_median &lt;dbl&gt;,</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="do">## #   white_women_average &lt;dbl&gt;, black_women_median &lt;dbl&gt;,</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="do">## #   black_women_average &lt;dbl&gt;, hispanic_women_median &lt;dbl&gt;, …</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Cleaned data with: Full Pivot longer of all demographic indicators</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>cleaned_data_1 <span class="ot">&lt;-</span> Combined_data <span class="sc">%&gt;%</span> </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>year , <span class="at">names_to =</span> <span class="st">&quot;demographic&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Wages&quot;</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cleaned_data_1, <span class="dv">15</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 15 × 3</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="do">##     year demographic       Wages</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="do">##  1  1973 median             19.8</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="do">##  2  1973 average            23.0</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="do">##  3  1973 men_median         24  </span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="do">##  4  1973 men_average        27.0</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="do">##  5  1973 women_median       15.1</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="do">##  6  1973 women_average      17.3</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="do">##  7  1973 white_median       20.5</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="do">##  8  1973 white_average      23.7</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="do">##  9  1973 black_median       16.0</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="do">## 10  1973 black_average      18.6</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="do">## 11  1973 hispanic_median    16.4</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="do">## 12  1973 hispanic_average   18.7</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="do">## 13  1973 white_men_median   25.0</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="do">## 14  1973 white_men_average  27.9</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="do">## 15  1973 black_men_median   19.3</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cleaned_data_1)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4500</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cleaned_data_1) </span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="do">##       year      demographic            Wages      </span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   :1973   Length:4500        Min.   :10.74  </span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.:1985   Class :character   1st Qu.:17.64  </span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median :1998   Mode  :character   Median :21.66  </span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   :1998                      Mean   :24.41  </span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.:2010                      3rd Qu.:29.00  </span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :2022                      Max.   :64.04  </span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="do">##                                    NA&#39;s   :96</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 <br>
@@ -3236,7 +3262,8 @@ vertical-align: -.125em;
 </section>
 <section id="preliminary-analysis-optional" class="level1">
 <h1>3. Preliminary analysis (OPTIONAL)</h1>
-<p>Preliminary Analysis of Wage Trends</p>
+<p>In this section, you are encouraged to build and perhaps discuss some plots <em>and</em> numerical summaries that address your research question(s). Though this section technically isn’t required, any extra analysis you do now will support and simplify your future work.</p>
+<p>Put your work below: Preliminary Analysis of Wage Trends</p>
 <p>Gender Differences: In the gender graph, men consistently earn more than women, although the gender wage gap has narrowed over time. The trend lines show that while both groups experience general wage growth, women’s wages have increased at a slightly faster rate, helping to reduce—but not eliminate—the disparity.</p>
 <p>Racial: In the race/ethnicity graph, White men have the highest median wages, with a clear gap above other groups. Black and Hispanic median wages are noticeably lower but relatively close to each other. While all groups exhibit some upward wage movement over time, the relative ranking between them remains stable, indicating persistent racial wage disparties.</p>
 <p>Education Level Differences: The education-level graph shows a strong and consistent pattern: higher education is associated with higher wages. The wage hierarchy follows the expected order:Advanced degree holders earn the highest wages, Bachelor’s degree holders follow, Some college, high school, and less than high school form a lower cluster with wages in a relatively similar and lower range.</p>
@@ -3316,6 +3343,7 @@ vertical-align: -.125em;
 <section id="reflection-form" class="level1">
 <h1>5. Reflection form</h1>
 <p>Only after you’ve completed items 1–4 above, each individual group member must fill out this <a href="https://forms.gle/xCtgxM2fxYjcCJvn6">reflection form</a>.</p>
+<p>Missing ethnicities(Asian Americans, Asians, Indigenous communities) and gender(Non-binary, trans…)</p>
 <p><br>
 <br>
 <br>
