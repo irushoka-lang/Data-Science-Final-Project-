@@ -129,8 +129,10 @@ cleaned_data_1 <- Combined_data %>%
 head(cleaned_data_1, 15)
 nrow(cleaned_data_1)
 summary(cleaned_data_1) 
-#Holakampe
+
+
 ```
+
 
 
 
@@ -188,6 +190,133 @@ ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) +
   geom_point() + 
   geom_line() + 
   labs(title = "Wage Trends by Education Level (1973–2022)")
+
+
+```
+```{r}
+# Density plot of different education levels: 
+#Less than High school
+less_hs_data <- cleaned_data_1 %>% 
+  filter(str_ends(demographic,"less_than_hs")) %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+less_hs_data
+
+ggplot(less_hs_data, aes(x = Wages, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~Race)
+
+
+
+# High school
+hs <-  cleaned_data_1 %>% 
+  filter(str_ends(demographic,"high_school")) %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+
+
+ggplot(hs, aes(x = Wages, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~Race)
+
+
+# Some College
+some_college_data <-  cleaned_data_1 %>% 
+  filter(str_ends(demographic,"some_college")) %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+
+
+ggplot(some_college_data, aes(x = Wages, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~Race)
+
+# Bachelors degree
+bachelor_data <-  cleaned_data_1 %>% 
+  filter(str_ends(demographic,"bachelors_degree")) %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+
+
+ggplot(bachelor_data, aes(x = Wages, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~Race)
+
+#Advanced degree: 
+advanced_data <-  cleaned_data_1 %>% 
+  filter(str_ends(demographic,"advanced_degree")) %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+
+
+ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~Race)
 
 
 ```
