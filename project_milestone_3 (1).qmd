@@ -90,15 +90,12 @@ In this section:
 Put your work below:
 
 ```{r}
-library(readr)
+library(dplyr)
 
-wages_data  <- read_csv("~/Documents/DS 112/Projects/wages_by_education.csv")
-head(wages_data)
+demographic_data <-read.csv("~/Desktop/DS112/Project/wages_by_education.csv")
 
-nrow(wages_data)
-
-#summary(wages_data)
-
+median_wage <- read.csv("~/Desktop/DS112/Project/median_average_wages.csv")
+Combined_data <- left_join(median_wage,demographic_data, by = "year") 
 ```
 Do a preliminary data check. For *example*, identify:
 
@@ -114,12 +111,17 @@ Do a preliminary data check. For *example*, identify:
         -   reshape the data
         -   join datasets
 
+
+
+
 \
 \
 \
 \
 
 # 3. Preliminary analysis (OPTIONAL)
+
+demograph
 
 In this section, you are encouraged to build and perhaps discuss some plots *and* numerical summaries that address your research question(s). Though this section technically isn't required, any extra analysis you do now will support and simplify your future work.
 
