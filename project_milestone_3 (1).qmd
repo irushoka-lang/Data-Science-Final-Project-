@@ -129,6 +129,7 @@ cleaned_data_1 <- Combined_data %>%
 head(cleaned_data_1, 15)
 nrow(cleaned_data_1)
 summary(cleaned_data_1) 
+#Holakampe
 ```
 
 
