@@ -133,9 +133,18 @@ summary(cleaned_data_1)
 
 ```
 
+```{r}
+# gender wage ratio by demographics group 
 
-
-
+cleaned_data_6 <- Combined_data %>% 
+  mutate(wage_ratio_overall= women_median/men_median,
+         wage_ratio_white= white_women_median/ white_men_median,
+         wage_ratio_black=  black_women_median/ black_men_median,
+         wage_ratio_hispanic= hispanic_women_median/ hispanic_men_median) %>% 
+  select(year,wage_ratio_overall, wage_ratio_white, wage_ratio_black, wage_ratio_hispanic)  
+cleaned_data_6 %>% 
+  select(year,wage_ratio_overall, wage_ratio_white, wage_ratio_black, wage_ratio_hispanic) 
+```
 \
 \
 \
@@ -191,6 +200,14 @@ ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) +
   geom_line() + 
   labs(title = "Wage Trends by Education Level (1973–2022)")
 
+# gender wage ratio by race:
+
+cleaned_data_6 %>%  
+ pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") %>% 
+  
+ggplot(aes(x = year, y = Wages, color = demographic)) + 
+  geom_point() + 
+  geom_line() 
 
 ```
 ```{r}
