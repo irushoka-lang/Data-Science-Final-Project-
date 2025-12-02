@@ -337,6 +337,34 @@ ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
 
 
 ```
+```{r}
+gap_data <- Combined_data %>%
+  mutate(gender_gap = men_median - women_median)
+
+ggplot(gap_data, aes(x = year, y = gender_gap)) +
+  geom_line(color = "firebrick", size = 1.2) +
+  theme_minimal() +
+  labs(title = "Gender Wage Gap Over Time",
+       y = "Wage Gap (Men - Women)")
+
+ggplot(cleaned_data_4, aes(x = year, y = Wages)) +
+  geom_line(color = "steelblue") +
+  facet_wrap(~ demographic, scales = "free_y") +
+  theme_minimal() +
+  labs(title = "Wage Trends by Race (1970–2020)")
+
+slope_data <- Combined_data %>%
+  filter(year %in% c(2000, 2020)) %>%
+  select(year, white_median, black_median, hispanic_median) %>%
+  pivot_longer(cols = -year, names_to = "demographic", values_to = "Wages")
+
+ggplot(slope_data, aes(x = factor(year), y = Wages, group = demographic, color = demographic)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(title = "Wage Change by Race (2000 → 2020)")
+
+```
 \
 \
 \
