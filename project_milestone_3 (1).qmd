@@ -209,6 +209,10 @@ ggplot(aes(x = year, y = Wages, color = demographic)) +
   geom_point() + 
   geom_line() 
 
+
+
+  
+
 ```
 ```{r}
 # Density plot of different education levels: 
