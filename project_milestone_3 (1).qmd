@@ -5,6 +5,9 @@ format:
     toc: true
     toc-depth: 2
     embed-resources: true
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r include = FALSE}
@@ -22,11 +25,17 @@ knitr::opts_chunk$set(
 
 **NOTE**
 
-This progress report represents the *minimum* progress you need to make in order to stay on track. You're encouraged to do more, if possible. For example:
+This progress report represents the *minimum* progress you need to make
+in order to stay on track. You're encouraged to do more, if possible.
+For example:
 
--   Though your responses to *this* progress report can be informal, take some time to:
-    -   Edit written responses as they might appear in your final report.
-    -   Edit code and plots as they might appear in your final report (eg: use figure captions, alt text, color-blind friendly palettes, etc).
+-   Though your responses to *this* progress report can be informal,
+    take some time to:
+    -   Edit written responses as they might appear in your final
+        report.
+    -   Edit code and plots as they might appear in your final report
+        (eg: use figure captions, alt text, color-blind friendly
+        palettes, etc).
 -   Make more plots! Do more wrangling! Learn new things!
 
 \
@@ -34,11 +43,8 @@ This progress report represents the *minimum* progress you need to make in order
 
 # Names
 
-Put the full names (first and last) of every group member here.
--Gaby Moreno Romero 
--Kampe Rushoka
--Val Tlahuice
-
+Put the full names (first and last) of every group member here. -Gaby
+Moreno Romero -Kampe Rushoka -Val Tlahuice
 
 \
 \
@@ -47,20 +53,29 @@ Put the full names (first and last) of every group member here.
 
 In this section, specify:
 
--   The overarching **research question** for your project. You will break this down into smaller pieces in your analysis, but should have a general guiding question.
+-   The overarching **research question** for your project. You will
+    break this down into smaller pieces in your analysis, but should
+    have a general guiding question.
 
--   Specify your data sources, including *where* you found your dataset(s) and who *originally* collected the data. If possible, also identify the original purpose for this data collection.
+-   Specify your data sources, including *where* you found your
+    dataset(s) and who *originally* collected the data. If possible,
+    also identify the original purpose for this data collection.
 
 Put your work below:
 
-RQ: How have demographics (Sex, Race) and education levels affected Americans wages over time? 
+RQ: How have demographics (Sex, Race) and education levels affected
+Americans wages over time?
 
-Data source: The Wages by Education dataset was found from Kaggle and provides provides hourly wages by the highest level of education attained for wage and salary workers aged 16 and older in the USA and disagregated for other demographic factors such as sex (Male and Female) and ethnicities(White, Black, and Hispanic). The data is adjusted into 2022 dollars using the CPI-U-RS index, to acount for inflation. It covers the years from 1973 to 2022 and is sourced from the Economic Policy Institute’s State of Working America Data Library. It is important to note some demographics such as asian, indigenous, non-binary and trans identities are missing. 
-
-
-
-
-
+Data source: The Wages by Education dataset was found from Kaggle and
+provides provides hourly wages by the highest level of education
+attained for wage and salary workers aged 16 and older in the USA and
+disagregated for other demographic factors such as sex (Male and Female)
+and ethnicities(White, Black, and Hispanic). The data is adjusted into
+2022 dollars using the CPI-U-RS index, to acount for inflation. It
+covers the years from 1973 to 2022 and is sourced from the Economic
+Policy Institute’s State of Working America Data Library. It is
+important to note some demographics such as asian, indigenous,
+non-binary and trans identities are missing.
 
 \
 \
@@ -79,27 +94,38 @@ In this section:
     -   how many data points you have
     -   the number of variables and types of things that were measured
 
--   Do any preliminary data cleaning that's necessary to start your analysis. For example:
+-   Do any preliminary data cleaning that's necessary to start your
+    analysis. For example:
 
     -   define / clean the variables you plan to use in your analysis
-    -   obtain some simple summaries of the variables you plan to use in your analysis
+    -   obtain some simple summaries of the variables you plan to use in
+        your analysis
     -   as necessary:
         -   reshape the data
         -   join datasets
 
 Put your work below:
 
-Preliminary Data:
-- Units of observation: Aggregated demographic-year wages within the U.S.
+Preliminary Data: - Units of observation: Aggregated demographic-year
+wages within the U.S.
 
-- Number of data points: 4,500 entries (each representing a unique demographic-year combination).
+-   Number of data points: 4,500 entries (each representing a unique
+    demographic-year combination).
 
-- Variables measured: Demographic information: Categories such as race (Black, White), education level (less than high school), gender (women), and all possible combinations, Year: The year in which the wage data was measured, Wages: Hourly wages adjusted to 2022 dollars. 
+-   Variables measured: Demographic information: Categories such as race
+    (Black, White), education level (less than high school), gender
+    (women), and all possible combinations, Year: The year in which the
+    wage data was measured, Wages: Hourly wages adjusted to 2022
+    dollars.
 
-
-
-Preliminary data cleaning and refinement:
-We defined and cleaned the variables to ensure consistency for analysis. We also combined both median and average wage data from the Economic Policy Institute. This helps reduce the influence of extreme values, as averages can be skewed by very high or very low wages. Lastly we pivoted the data to a longer format to capture all demographic-year combinations efficiently. The dataset spans 1973–2022, with wages ranging from $10.74 to $64.04 per hour.
+Preliminary data cleaning and refinement: We defined and cleaned the
+variables to ensure consistency for analysis. We also combined both
+median and average wage data from the Economic Policy Institute. This
+helps reduce the influence of extreme values, as averages can be skewed
+by very high or very low wages. Lastly we pivoted the data to a longer
+format to capture all demographic-year combinations efficiently. The
+dataset spans 1973–2022, with wages ranging from \$10.74 to \$64.04 per
+hour.
 
 ```{r}
 library(readr)
@@ -133,9 +159,6 @@ summary(cleaned_data_1)
 
 ```
 
-
-
-
 \
 \
 \
@@ -143,20 +166,39 @@ summary(cleaned_data_1)
 
 # 3. Preliminary analysis (OPTIONAL)
 
+In this section, you are encouraged to build and perhaps discuss some
+plots *and* numerical summaries that address your research question(s).
+Though this section technically isn't required, any extra analysis you
+do now will support and simplify your future work.
 
+Put your work below: Preliminary Analysis of Wage Trends
 
-In this section, you are encouraged to build and perhaps discuss some plots *and* numerical summaries that address your research question(s). Though this section technically isn't required, any extra analysis you do now will support and simplify your future work.
+Gender Differences: In the gender graph, men consistently earn more than
+women, although the gender wage gap has narrowed over time. The trend
+lines show that while both groups experience general wage growth,
+women’s wages have increased at a slightly faster rate, helping to
+reduce—but not eliminate—the disparity.
 
-Put your work below:
-Preliminary Analysis of Wage Trends
+Racial: In the race/ethnicity graph, White men have the highest median
+wages, with a clear gap above other groups. Black and Hispanic median
+wages are noticeably lower but relatively close to each other. While all
+groups exhibit some upward wage movement over time, the relative ranking
+between them remains stable, indicating persistent racial wage
+disparties.
 
-Gender Differences: In the gender graph, men consistently earn more than women, although the gender wage gap has narrowed over time. The trend lines show that while both groups experience general wage growth, women’s wages have increased at a slightly faster rate, helping to reduce—but not eliminate—the disparity.
+Education Level Differences: The education-level graph shows a strong
+and consistent pattern: higher education is associated with higher
+wages. The wage hierarchy follows the expected order:Advanced degree
+holders earn the highest wages, Bachelor’s degree holders follow, Some
+college, high school, and less than high school form a lower cluster
+with wages in a relatively similar and lower range.
 
-Racial: In the race/ethnicity graph, White men have the highest median wages, with a clear gap above other groups. Black and Hispanic median wages are noticeably lower but relatively close to each other. While all groups exhibit some upward wage movement over time, the relative ranking between them remains stable, indicating persistent racial  wage disparties.
+Notably, the groups with lower education levels do not show the same
+long-term upward trend as other demographics. Instead, wages for
+individuals with less than high school, high school, or some college
+education have experienced a small but concerning decline over the
+years, emphasizing widening wage inequality by education level.
 
-Education Level Differences: The education-level graph shows a strong and consistent pattern: higher education is associated with higher wages. The wage hierarchy follows the expected order:Advanced degree holders earn the highest wages, Bachelor’s degree holders follow, Some college, high school, and less than high school form a lower cluster with wages in a relatively similar and lower range.
-
-Notably, the groups with lower education levels do not show the same long-term upward trend as other demographics. Instead, wages for individuals with less than high school, high school, or some college education have experienced a small but concerning decline over the years, emphasizing widening wage inequality by education level.
 ```{r}
 #Gender 
 cleaned_data_3 <- Combined_data %>% 
@@ -193,6 +235,50 @@ ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) +
 
 
 ```
+
+```{r}
+#Education & Gender
+
+#I could categorize them in High levels and low levels of education, and make those variables, 
+#I could also categorize them in Gender, Male or Female
+#Then when I pivot longer, I could have gender, level of education and wage.
+
+
+cleaned_data_2 <- cleaned_data_1 %>%
+  mutate(Gender = case_when(
+    str_starts(demographic, "men_") ~ "Men",
+    str_starts(demographic,"women_") ~ "Women",
+    TRUE ~ NA_character_
+  )) %>%
+  mutate(Education_level = case_when(
+    str_detect(demographic, c("less_than_hs")) ~ "less_than_hs", 
+    str_detect(demographic, c("high_school")) ~ "high school", 
+    str_detect(demographic, c("some_college")) ~ "some college",
+    str_detect(demographic, c("bachelors_degree")) ~ "Bachelor",
+    str_detect(demographic, c("advanced_degree")) ~ "Advanced",
+    TRUE ~ NA_character_
+  )) %>% 
+  mutate(Education_level = fct_relevel(Education_level, c("Advanced","Bachelor","some college", "high school","less_than_hs"))) %>%
+  drop_na(Gender, Education_level)
+
+
+cleaned_data_2
+
+#Drawing a Visualisation: 
+ggplot(cleaned_data_2, aes(x=year, y = Wages, color = Education_level))+ 
+  geom_point(size = 0.9) +
+  geom_line() +
+  facet_wrap(~Gender)+
+  labs(
+    title = "Wage Trends by Education Level and Gender (1973-2020)",
+    x = "Year",
+    y = "Median Wages",
+    color = "Education Level",
+    caption = "Source: Your cleaned dataset"
+  )+
+  theme_minimal()
+```
+
 ```{r}
 # Density plot of different education levels: 
 #Less than High school
@@ -320,6 +406,7 @@ ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
 
 
 ```
+
 \
 \
 \
@@ -327,25 +414,62 @@ ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
 
 # 4. Vision
 
-Remember that growth and depth are key components of the final project assessment. Identify here what types of tools / skills do you plan to learn throughout the course of this project (or perhaps even what new things you already learned)! Revisit the project overview for ideas.
+Remember that growth and depth are key components of the final project
+assessment. Identify here what types of tools / skills do you plan to
+learn throughout the course of this project (or perhaps even what new
+things you already learned)! Revisit the project overview for ideas.
 
 Put your work below:
 
-One major area of improvement is learning how to reshape datasets. Specifically, understanding how to use pivot longer/ wider and joints more confidently, since those have been some of the trickiest parts of the course for me. 
-Also, we can  improve my interpretation of wage trends by connecting statistical patterns to broader social and economic contexts in the United States. For this, it is important to also improve how to create clear and comparative visualization, especially when we have plots that show differences across sex, race, and education levels at the same time.
-Finally, we want to be mindful about missing groups (such as Asian, Indigenous, non-binary) when interpreting results. As we continue, we want to strengthen both the technical R skills and the critical reasoning needed to analyze wage inequality over time.
+One major area of improvement is learning how to reshape datasets.
+Specifically, understanding how to use pivot longer/ wider and joints
+more confidently, since those have been some of the trickiest parts of
+the course for me. Also, we can improve my interpretation of wage trends
+by connecting statistical patterns to broader social and economic
+contexts in the United States. For this, it is important to also improve
+how to create clear and comparative visualization, especially when we
+have plots that show differences across sex, race, and education levels
+at the same time. Finally, we want to be mindful about missing groups
+(such as Asian, Indigenous, non-binary) when interpreting results. As we
+continue, we want to strengthen both the technical R skills and the
+critical reasoning needed to analyze wage inequality over time.
 
 \
 \
 \
 \
+
+```{r}
+#One number summary: 
+one_number_summary <- cleaned_data_1 %>% 
+  mutate(
+    Race = case_when(
+      str_starts(demographic, "white") ~ "White",
+      str_starts(demographic, "black") ~ "Black",
+      str_starts(demographic, "hispanic") ~ "Hispanic",
+      TRUE ~ "NA"
+    )) %>% 
+  mutate(
+    Gender = case_when(
+      str_detect(demographic, "_men_") ~ "Men",
+      str_detect(demographic, "_women_") ~ "Women",
+      TRUE ~ "NA"
+    )) %>%
+  filter(Race != "NA", Gender != "NA") 
+
+one_number_summary %>% 
+  group_by(Gender) %>% 
+  summarise(range(Wages))
+```
 
 # 5. Reflection form
 
-Only after you've completed items 1--4 above, each individual group member must fill out this [reflection form](https://forms.gle/xCtgxM2fxYjcCJvn6).
+Only after you've completed items 1--4 above, each individual group
+member must fill out this [reflection
+form](https://forms.gle/xCtgxM2fxYjcCJvn6).
 
-
-Missing ethnicities(Asian Americans, Asians, Indigenous communities) and gender(Non-binary, trans...)
+Missing ethnicities(Asian Americans, Asians, Indigenous communities) and
+gender(Non-binary, trans...)
 
 \
 \
@@ -354,5 +478,8 @@ Missing ethnicities(Asian Americans, Asians, Indigenous communities) and gender(
 
 # Wrapping up
 
--   Render your qmd to html, check/fix the formatting, then submit the html!
--   Remember that this progress report represents the *minimum* progress you need to make in order to stay on track. You're encouraged to do more, if possible. Ideas are outlined at the top of this assignment.
+-   Render your qmd to html, check/fix the formatting, then submit the
+    html!
+-   Remember that this progress report represents the *minimum* progress
+    you need to make in order to stay on track. You're encouraged to do
+    more, if possible. Ideas are outlined at the top of this assignment.
