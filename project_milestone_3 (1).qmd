@@ -35,9 +35,9 @@ This progress report represents the *minimum* progress you need to make in order
 # Names
 
 Put the full names (first and last) of every group member here.
--Gaby Moreno Romero 
--Kampe Rushoka
--Val Tlahuice
+  - Gaby Moreno Romero
+  - Kampe Rushoka
+  - Val Tlahuice
 
 
 \
@@ -75,7 +75,7 @@ In this section:
 
 -   Do a preliminary data check. For *example*, identify:
 
-    -   units of observation
+    -   units of observation 
     -   how many data points you have
     -   the number of variables and types of things that were measured
 
@@ -96,8 +96,6 @@ Preliminary Data:
 
 - Variables measured: Demographic information: Categories such as race (Black, White), education level (less than high school), gender (women), and all possible combinations, Year: The year in which the wage data was measured, Wages: Hourly wages adjusted to 2022 dollars. 
 
-
-
 Preliminary data cleaning and refinement:
 We defined and cleaned the variables to ensure consistency for analysis. We also combined both median and average wage data from the Economic Policy Institute. This helps reduce the influence of extreme values, as averages can be skewed by very high or very low wages. Lastly we pivoted the data to a longer format to capture all demographic-year combinations efficiently. The dataset spans 1973–2022, with wages ranging from $10.74 to $64.04 per hour.
 
@@ -105,7 +103,6 @@ We defined and cleaned the variables to ensure consistency for analysis. We also
 library(readr)
 library(dplyr)
 library(tidyverse)
-
 
 #demographic_data <- read_csv("~/Documents/DS 112/Projects/wages_by_education.csv")
 
@@ -131,7 +128,22 @@ nrow(cleaned_data_1)
 summary(cleaned_data_1) 
 
 
+library (tidyr)
+demographic_data <- read_csv("~/Documents/DS 112/Projects/wages_by_education.csv")
+head(demographic_data)
+
+median_wage <- read_csv("~/Documents/DS 112/Projects/median_average_wages.csv")
+head(median_wage)
+
+Combined_data <- left_join(median_wage,demographic_data, by = "year")
+
+cleaned_data_1 <- Combined_data %>% 
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages")
+
+head(cleaned_data_1)
 ```
+
+Do a preliminary data check. For *example*, identify:
 
 ```{r}
 # gender wage ratio by demographics group 
@@ -167,6 +179,8 @@ Education Level Differences: The education-level graph shows a strong and consis
 
 Notably, the groups with lower education levels do not show the same long-term upward trend as other demographics. Instead, wages for individuals with less than high school, high school, or some college education have experienced a small but concerning decline over the years, emphasizing widening wage inequality by education level.
 ```{r}
+library(tidyverse)
+#Wages of White women vs Wages of Black women same education: 
 #Gender 
 cleaned_data_3 <- Combined_data %>% 
   select(men_median, women_median, year) %>%
@@ -176,7 +190,7 @@ ggplot(cleaned_data_3, aes(x = year, y = Wages, color = demographic)) +
   geom_point() + 
   geom_line()+ 
     labs(title = "Wage Trends by Gender (1973–2022)")
-  
+
 #Race
 cleaned_data_4 <- Combined_data %>% 
   select(white_median, black_median, hispanic_median, year) %>%
@@ -187,10 +201,7 @@ ggplot(cleaned_data_4, aes(x = year, y = Wages, color = demographic)) +
   geom_line() + 
     labs(title = "Wage Trends by Race (1973–2022)")
 
-  
-  
 #Education: 
-
 cleaned_data_5 <- Combined_data %>% 
   select(less_than_hs, high_school, some_college, bachelors_degree, advanced_degree, year) %>%
   pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") 
@@ -210,7 +221,9 @@ ggplot(aes(x = year, y = Wages, color = demographic)) +
   geom_line() 
 
 ```
+
 ```{r}
+library(patchwork)
 # Density plot of different education levels: 
 #Less than High school
 less_hs_data <- cleaned_data_1 %>% 
@@ -232,9 +245,10 @@ less_hs_data <- cleaned_data_1 %>%
 
 less_hs_data
 
-ggplot(less_hs_data, aes(x = Wages, fill = Gender)) +
+plot_first <- ggplot(less_hs_data, aes(x = Wages, fill = Gender)) +
   geom_density(alpha = 0.5) +
-  facet_wrap(~Race)
+  facet_wrap(~Race) +
+  labs(title = "Less than high school wage gaps")
 
 
 
@@ -331,21 +345,23 @@ advanced_data <-  cleaned_data_1 %>%
 
 
 
-ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
+plot_second <- ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
   geom_density(alpha = 0.5) +
-  facet_wrap(~Race)
+  facet_wrap(~Race)+
+  labs(title = "Advanced degree wage gaps")
 
-
+plot_first + plot_second
 ```
+
 ```{r}
 gap_data <- Combined_data %>%
   mutate(gender_gap = men_median - women_median)
 
-ggplot(gap_data, aes(x = year, y = gender_gap)) +
+ggplot(gap_data, aes(x = year, y = gender_gap)) + 
   geom_line(color = "firebrick", size = 1.2) +
   theme_minimal() +
   labs(title = "Gender Wage Gap Over Time",
-       y = "Wage Gap (Men - Women)")
+       y = "Hourly Wage Gap [Men Median vs Women Median]")
 
 ggplot(cleaned_data_4, aes(x = year, y = Wages)) +
   geom_line(color = "steelblue") +
@@ -376,8 +392,10 @@ Remember that growth and depth are key components of the final project assessmen
 
 Put your work below:
 
-One major area of improvement is learning how to reshape datasets. Specifically, understanding how to use pivot longer/ wider and joints more confidently, since those have been some of the trickiest parts of the course for me. 
-Also, we can  improve my interpretation of wage trends by connecting statistical patterns to broader social and economic contexts in the United States. For this, it is important to also improve how to create clear and comparative visualization, especially when we have plots that show differences across sex, race, and education levels at the same time.
+One major area of improvement is learning how to reshape datasets. Specifically, understanding how to use pivot longer/ wider and joints more confidently, since those have been some of the trickiest parts of the course for some of us. 
+
+Also, we want to improve our interpretation of wage trends by connecting statistical patterns to broader social and economic contexts in the United States. For this, it is important to also improve how to create clear and comparative visualization, especially when we have plots that show differences across sex, race, and education levels at the same time.
+
 Finally, we want to be mindful about missing groups (such as Asian, Indigenous, non-binary) when interpreting results. As we continue, we want to strengthen both the technical R skills and the critical reasoning needed to analyze wage inequality over time.
 
 \
@@ -390,7 +408,6 @@ Finally, we want to be mindful about missing groups (such as Asian, Indigenous, 
 Only after you've completed items 1--4 above, each individual group member must fill out this [reflection form](https://forms.gle/xCtgxM2fxYjcCJvn6).
 
 
-Missing ethnicities(Asian Americans, Asians, Indigenous communities) and gender(Non-binary, trans...)
 
 \
 \
