@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
 
 \
 
+
 **NOTE**
 
 This progress report represents the *minimum* progress you need to make
@@ -158,6 +159,18 @@ summary(cleaned_data_1)
 
 
 ```
+```{r}
+# gender wage ratio by demographics group 
+
+cleaned_data_6 <- Combined_data %>% 
+  mutate(wage_ratio_overall= women_median/men_median,
+         wage_ratio_white= white_women_median/ white_men_median,
+         wage_ratio_black=  black_women_median/ black_men_median,
+         wage_ratio_hispanic= hispanic_women_median/ hispanic_men_median) %>% 
+  select(year,wage_ratio_overall, wage_ratio_white, wage_ratio_black, wage_ratio_hispanic)  
+cleaned_data_6 %>% 
+  select(year,wage_ratio_overall, wage_ratio_white, wage_ratio_black, wage_ratio_hispanic) 
+```
 
 \
 \
@@ -233,6 +246,14 @@ ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) +
   geom_line() + 
   labs(title = "Wage Trends by Education Level (1973–2022)")
 
+# gender wage ratio by race:
+
+cleaned_data_6 %>%  
+ pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") %>% 
+  
+ggplot(aes(x = year, y = Wages, color = demographic)) + 
+  geom_point() + 
+  geom_line() 
 
 ```
 
@@ -404,6 +425,35 @@ ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
   geom_density(alpha = 0.5) +
   facet_wrap(~Race)
 
+
+```
+
+```{r}
+gap_data <- Combined_data %>%
+  mutate(gender_gap = men_median - women_median)
+
+ggplot(gap_data, aes(x = year, y = gender_gap)) +
+  geom_line(color = "firebrick", size = 1.2) +
+  theme_minimal() +
+  labs(title = "Gender Wage Gap Over Time",
+       y = "Wage Gap (Men - Women)")
+
+ggplot(cleaned_data_4, aes(x = year, y = Wages)) +
+  geom_line(color = "steelblue") +
+  facet_wrap(~ demographic, scales = "free_y") +
+  theme_minimal() +
+  labs(title = "Wage Trends by Race (1970–2020)")
+
+slope_data <- Combined_data %>%
+  filter(year %in% c(2000, 2020)) %>%
+  select(year, white_median, black_median, hispanic_median) %>%
+  pivot_longer(cols = -year, names_to = "demographic", values_to = "Wages")
+
+ggplot(slope_data, aes(x = factor(year), y = Wages, group = demographic, color = demographic)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  theme_minimal() +
+  labs(title = "Wage Change by Race (2000 → 2020)")
 
 ```
 
