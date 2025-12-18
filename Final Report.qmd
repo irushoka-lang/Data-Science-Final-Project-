@@ -1,5 +1,6 @@
 ---
 title: "Data Science 112 Final Report"
+author: Val Tlahuice , Kampe Rushoka, Gabriella Moreno
 format:
   html:
     toc: true
@@ -25,14 +26,16 @@ Wage inequality has long been a defining feature of the United States labor mark
 
 By using data from the Economic Policy Institute, this study asks: How have demographics, specifically sex and race and different levels of educational attainment affected Americans’ median wages between 1973 to 2022? By analyzing wage trends across demographic and educational categories, this research seeks to identify which identities have benefited most from economic growth and which continue to experience structural disadvantages in the labor market. Additionally, look into the economic trajectory of  intersection of identities as well.  This study could help better explain historical structural inequality and as well justify more equitable public policies such as  pay equity regulations, affirmative action, and equitable access to education.  
 
-By drawing on existing theories of privilege and racial economic disparaties. Our study has some hypotheses. First, we  expected that white men with advanced levels of education will consistently earn the highest median wages over time, reflecting their compounded advantages of race, gender, and educational credentials. Second, the analysis anticipates substantial wage differences between white workers and non-white identities (Black and Hispanic Identities). 
+Drawing on existing theories of structural privilege and racial economic disparities, this study advances several hypotheses about wage inequality across race, gender, and education ( Pager and Shepherd 2008; Wilson 1996; Blau and Kahn 2017). First, we  expected that white men with advanced levels of education will consistently earn the highest median wages over time, reflecting their compounded advantages of race, gender, and educational credentials. Second, the analysis anticipates substantial wage differences between white workers and non-white identities (Black and Hispanic Identities). 
 
 
 ## Data background 
 
-The Wages by Education dataset was sourced from Kaggle and provides hourly wages by the highest level of education attained for wage and salary workers aged 16 and older in the USA. The data was disaggregated by demographic factors including gender (Male and Female) and race/ ethnicity (White, Black, and Hispanic). All wages are adjusted to 2022 dollars using the CPI-U-RS index to account for inflation. The dataset spans from 1973 to 2022 and originates from the Economic Policy Institute's State of Working America Data Library. 
+The Wages by Education dataset was sourced from Kaggle and provides hourly wages by the highest level of education attained for wage and salary workers aged 16 and older in the USA. The data was disaggregated by demographic factors including gender (Male and Female) and race/ ethnicity (White, Black, and Hispanic). All wages are adjusted to 2022 dollars using the CPI-U-RS index to account for inflation. The dataset spans from 1973 to 2022 and originates from the Economic Policy Institute's State of Working America Data Library (Kaggle. (n.d.)). 
 
-After cleaning, the combined dataset contains approximately 4,500 aggregated wage records and includes four main variables: race, gender, education level, and median wages. During preprocessing, the data was joined with a second Kaggle dataset (also sourced from the EPI) containing median and average wage measures. Demographic labels were standardized, and the data were pivoted to a long format to produce one row per demographic per year. It is important to note that several groups. including Asian, Indigenous, non-binary, and transgender identities, are not represented in the data.
+After cleaning, the dataset contains approximately 4,500 aggregated wage records and includes five main variables: race, gender, education level, wages and median wages. During preprocessing, the data was joined with a second Kaggle dataset (also sourced from the EPI through Kaggle) containing median and average wage measures (Kaggle. (n.d.)). We observed that average wages were sometimes unusually high, likely influenced by extreme outliers in the dataset. To minimize the impact of these outliers, we focused on median wages, which better represent the typical earnings of each group.
+
+Data quality checks revealed no missing wage values, though some demographic identities are not represented in the dataset, including Asian, Indigenous, non-binary, and transgender individuals.In our wrangling, Demographic labels were standardized, and the dataset was pivoted to a long format, producing one row per demographic per year.
 
 ```{r, echo = FALSE}
 library(readr)
@@ -54,18 +57,21 @@ cleaned_data_1 <- Combined_data %>%
 
 
 ```{r, echo = FALSE}
-head(cleaned_data_1)
+final_data <- cleaned_data_1 %>% 
+  filter(!str_detect(demographic, "average"))
+
+head(final_data, 8)
 
 ```
 
 ## Data insights 
 
-### Wages across education levels 
+### Median Wage Differences across Education Levels 
 
 When first looking at the median wages across the different educational levels in Figure 1 , we see interesting findings. Following our intuition, the higher the education level the higher the median wage of that educational level group, and that has been consistent across the years from 1973-2022. Over the years, we can see that the median wage of those with a high school diploma or less, earned the lowest wages, roughly between $15 and $25 per hour. Whereas, the median wage of those with advanced degrees was generally between $35 and $55 per hour, across the years. Additionally, Advanced-degree and bachelor degree median wages seems to have been growing at the fastest rate across all educational levels, whereas the lower educational levels have experienced low to no median wage growth. Therefore, this graph shows increasing return to education, suggesting that education could be an important factor determining wages.
 
 
-```{r, echo=FALSE, fig.cap="Median hourly wages from 1973 to 2022 by education level. Individuals with higher education consistently earned higher median wages, and wages have generally increased over time.", fig.alt="This figure shows median hourly wages in the United States from 1973 to 2022, separated by education level. Wages increase with higher education: less than high school earns the least, high school graduates and some college in the middle, and bachelor's and advanced degree holders earn the most. Wages have increased over time for all education levels, with advanced-degree wages growing fastest."}
+```{r, echo=FALSE, fig.cap=" Figure 1 is a scatter plot showing median hourly wages from 1973 to 2022 by education level.", fig.alt="This figure shows median hourly wages in the United States from 1973 to 2022, separated by education level. Wages increase with higher education: less than high school earns the least, high school graduates and some college in the middle, and bachelor's and advanced degree holders earn the most. Wages have increased over time for all education levels, with advanced-degree wages growing fastest."}
 
 cleaned_data_5 <- Combined_data %>% 
   select(less_than_hs, high_school, some_college, bachelors_degree, advanced_degree, year) %>%
@@ -76,63 +82,44 @@ ggplot(cleaned_data_5, aes(x = year, y = Wages, color = demographic)) +
   geom_line() + 
   scale_color_viridis(discrete = TRUE, option = "D") +  # color-blind-friendly palette
   labs(
-    title = " Figure 1: Wage Trends by Education Level (1973–2022)",
+    title = "Figure 1: Wage Trends by Education Level (1973–2022)",
     x = "Year",
-    y = "Median Wage (USD per hour)",
+    y = "Median Hourly Wage ($)",
     color = "Education Level"
   ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    legend.position = "right"
-  )
+  theme_minimal() 
 ```
 
-### The Gender Wage Gap
+### Median Wage Differences Accross Gender
+According to Figure 2, men’s median wages are consistently higher than women’s median wages across the entire period shown. However, the gap between men’s and women’s wages has narrowed substantially over time. In 1973, the median wage difference was approximately $10 per hour, with men earning close to $25 per hour and women earning around $15 per hour. By 2022, this gap had decreased to roughly $5 per hour, as men’s median wages rose to about $26 per hour while women’s median wages increased to nearly $21 per hour. This pattern indicates significant progress toward wage convergence, though a persistent gender wage gap remains.
 
-Historically, researchers have observed wage disparities between men and women, which can be demonstrated by comparing the gender wage ratio. This ratio measures the difference in earnings between men and women. In 1973, the ratio was 0.63,  meaning women earned about 63% of what men earned. By 2022, women earned about 94% of what men earned. The narrowing of the gap over the years is largely attributed to women gaining greater access to education and work experience. Despite the progress, a significant disparity still remains. Therefore, to better understand how this gap differs across demographic groups, we calculated gender wage ratios separately for white, black, and hispanic workers. In 1973, white women earned just 61.4% of white men’s wages, compared with 69.3% for Black women and 73.8% for Hispanic women. By 2022, wage ratios improved for all races, with Black workers showing the smallest gender gap (94.9%), while White and Hispanic workers still faced larger gaps (87.7% and 82.8%). 
 
-```{r, echo = FALSE}
-#Education and Gender
-
-cleaned_data_2 <- cleaned_data_1 %>%
-  mutate(Gender = case_when(
-    str_starts(demographic, "men_") ~ "Men",
-    str_starts(demographic,"women_") ~ "Women",
-    TRUE ~ NA_character_
-  )) %>%
-  mutate(Education_level = case_when(
-    str_detect(demographic, c("less_than_hs")) ~ "less_than_hs", 
-    str_detect(demographic, c("high_school")) ~ "high school", 
-    str_detect(demographic, c("some_college")) ~ "some college",
-    str_detect(demographic, c("bachelors_degree")) ~ "Bachelor",
-    str_detect(demographic, c("advanced_degree")) ~ "Advanced",
-    TRUE ~ NA_character_
-  )) %>% 
-  mutate(Education_level = fct_relevel(Education_level, c("Advanced","Bachelor","some college", "high school","less_than_hs"))) %>%
-  drop_na(Gender, Education_level)
-
-#Drawing a Visualisation: 
-ggplot(cleaned_data_2, aes(x=year, y = Wages, color = Education_level))+ 
-  geom_point(size = 0.9) +
-  geom_line() +
-  facet_wrap(~Gender)+
-  labs(
-    title = "Wage Trends by Education Level and Gender (1973-2020)",
-    x = "Year",
-    y = "Median Wages",
-    color = "Education Level",
-    caption = "Source: Your cleaned dataset"
-  )+
-  theme_minimal()
+```{r, echo = FALSE, fig.cap= " Figure 2 is a scatterplot of median hourly wages ($) by sex over time", fig.alt =  "The graph shows that since 1973 till 2022, men (blue line) have consistently had higher median wages than women (orange line). However, the wage gap has gradually decreased over the years."}
+#Gender 
+cleaned_data_3 <- Combined_data %>% 
+  select(men_median, women_median, year) %>%
+  pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") %>% 
+  mutate(demographic= recode(demographic, 
+                             "men_median" = "Men", 
+                             "women_median" = "Women"))
+  
+ggplot(cleaned_data_3, aes(x = year, y = Wages, color = demographic)) + 
+  scale_color_manual(values = c("Men" = "#0072B2", "Women" = "#E69F00")) +
+  geom_point(size = 2) + 
+  geom_line(size = 1)+ 
+    labs(title = "        Figure 2: Median Wage Trends by Sex in US from 1973 to 2022", 
+         x = "Year", 
+         y = "Median Hourly Wage ($)", 
+         color  = "Sex") 
 ```
 
 
-### The Racial Pay Gap
 
-Hispanic and Black medians have stayed relatively similar, while the wage ratio with white people has stayed far. White workers were earning around $20 an hour (median) as early as 1980, a level that Hispanic and Black workers did not reach until around 2020. This forty-year delay highlights how racial wage inequality persists across decades, even as overall wages increase.
+### Median Wage Differences Accross Race
 
-```{r, echo = FALSE}
+Figure 3 reveals persistent racial wage disparities over time. Median hourly wages for Black and Hispanic workers follow closely aligned trajectories throughout the period, while White workers’ median wages remain consistently higher. Notably, White workers reached a median wage of approximately $20 per hour by the early 1980s, whereas Black and Hispanic workers did not reach this same wage level until around 2020. This roughly forty-year gap illustrates how racial wage inequality has persisted across decades, even as median wages increased for all groups in real terms.
+
+```{r, echo = FALSE, fig.cap = "Figure 3 displays median hourly wage trends by race (White, Black, and Hispanic) from 1973 to 2022.", fig.alt="This figure contains three line graphs, one for White, Black, and Hispanic workers, showing median hourly wages over time from 1973 to 2022. The White workers’ line remains consistently higher than the others throughout the period. The Black and Hispanic wage lines closely track each other at lower levels and increase more slowly. While White workers reach a median wage of about $20 per hour by the early 1980s, Black and Hispanic workers do not reach that level until approximately 2020, highlighting a decades-long racial wage gap."}
 cleaned_data_4 <- Combined_data %>% 
   select(white_median, black_median, hispanic_median, year) %>%
   pivot_longer(cols = -year , names_to = "demographic", values_to = "Wages") 
@@ -141,14 +128,18 @@ ggplot(cleaned_data_4, aes(x = year, y = Wages)) +
   geom_line(color = "steelblue") +
   facet_wrap(~ demographic, scales = "fixed") +
   theme_minimal() +
-  labs(title = "Wage Trends by Race (1970–2020)", y = "Median Hourly Wages ($)")
+  labs(title = "Figure 3: Wage Trends by Race (1970–2020)", y = "Median Hourly Wages ($)")
 ```
-## Intersection of identities
+## Median wages accross Intersection of Identities
 
-Now after looking at the median wages of  each identity group over time, our study was interested in looking into the intersection of multiple  identities. 
+Now after looking at the median wages of  each identity group over time, our study was interested in looking into the intersection of multiple  identities and how that has affected the changes in median wages over time
+
+### Median wages accross Education levels and Sex
+
+Figure 4 is a scatter plot of the median hourly wages by educational attainment for men and for women over time. The plot shows that for both sexes, higher educational attainment is consistently associated with higher median wages. However, when comparing the same education levels, men's median wages were consistently and significantly higher than women's median wages. For example, in 2022when looking at the median wage for men with advanced degrees, it was well above 60\$ an hour, whereas the median wage for women with the same degree was around 45\$. 
 
 
-```{r, echo = FALSE, fig.cap= "Figure 4 is a  graph displays a scatterplot of median hourly wages from the EPI by educational attainment for men and women over time.", fig.alt = "Figure 4 is a scatter plot of the median hourly wages by educational attainment for men and women over time. The plot shows that for both sexes, higher educational attainment is consistently associated with higher median wages. However, at the same education level, men's median wages are consistently and significantly higher than women's. For example, in 2022, men with advanced degrees earned well above $60 per hour, whereas women with the same degree earned around $45 per hour."}
+```{r, echo = FALSE, fig.cap= "Figure 4 displays a scatterplot of median hourly wages from the EPI by educational attainment for men and women over time.", fig.alt = "Figure 4 is a scatter plot of the median hourly wages by educational attainment for men and women over time. The plot shows that for both sexes, higher educational attainment is consistently associated with higher median wages. However, at the same education level, men's median wages are consistently and significantly higher than women's. For example, in 2022, men with advanced degrees earned well above $60 per hour, whereas women with the same degree earned around $45 per hour."}
 #Education & Gender
 
 #I could categorize them in High levels and low levels of education, and make those variables, 
@@ -186,7 +177,7 @@ ggplot(cleaned_data_2, aes(x=year, y = Wages, color = Education_level))+
   geom_line(size = 1) +
   facet_wrap(~Gender)+
   labs(
-    title = "           Figure 4: Median Wage Trends by Education Level and Sex (1973-2020)",
+    title = "  Figure 4: Median Wage Trends by Education Level and Sex (1973-2020)",
     x = "Year",
     y = "Median Hourly Wages ($)",
     color = "Education Level"
@@ -195,68 +186,118 @@ ggplot(cleaned_data_2, aes(x=year, y = Wages, color = Education_level))+
 ```
 
 
-Figure 4 is a scatter plot of the median hourly wages by educational attainment for men and for women over time. The plot shows that for both sexes, higher educational attainment is consistently associated with higher median wages. However, when comparing the same education levels, men's median wages were consistently and significantly higher than women's median wages. For example, in 2022when looking at the median wage for men with advanced degrees, it was well above 60\$ an hour, whereas the median wage for women with the same degree was around 45\$. 
+### Median Wages Accross Gender and Race differences
+
+Historically, researchers have documented wage disparities between men and women, which can be quantified using the gender wage ratio—the ratio of women’s median wages to men’s median wages. A value close to 1 indicates wage parity between women and men, while a value closer to 0 reflects a large gender wage gap, with women earning substantially less than men (Blau and Kahn 2017). To examine how this gap varies across demographic groups, we calculated gender wage ratios separately for White, Black, and Hispanic workers. As shown in Figure 5, in 1973 White women earned only 61.4% of White men’s median wages, compared to 69.3% for Black women and 73.8% for Hispanic women. By 2022, gender wage ratios increased across all racial groups, indicating substantial convergence. Black workers exhibited the smallest remaining gender gap, with women earning 94.9% of men’s wages, while White and Hispanic workers continued to face larger gaps, with ratios of 87.7% and 82.8%, respectively.
+
+```{r, echo = FALSE, fig.cap = "Figure 5 shows gender wage ratios by race over time. Through a scatterplot, the plot illustrates how the ratio of women’s to men’s median wages has changed across racial groups, highlighting both progress toward wage convergence and persistent racial disparities", fig.alt = "This line and scatter plot displays gender wage ratios from 1973 to 2022 for different racial groups. Each colored line represents a racial group. All groups show increasing wage ratios over time, indicating a narrowing gender wage gap. However, the levels and rates of convergence differ by race, with some groups such as white and hispanic consistently exhibiting lower ratios than others."}
+
+cleaned_data_6 <- Combined_data %>% 
+  mutate(wage_ratio_overall= women_median/men_median,
+         wage_ratio_white= white_women_median/ white_men_median,
+         wage_ratio_black=  black_women_median/ black_men_median,
+         wage_ratio_hispanic= hispanic_women_median/ hispanic_men_median) 
 
 
 
+cleaned_data_6 %>%
+  select(year, wage_ratio_white, wage_ratio_black, wage_ratio_hispanic) %>%
+  pivot_longer(cols = -year, names_to = "demographic", values_to = "Wages") %>%
+  ggplot(aes(x = year, y = Wages, color = demographic)) +
+  geom_line() +
+  geom_point() +
+  scale_color_viridis_d(option = "D", end = 0.85) +
+  labs(
+    x = "Year",
+    y = "Gender Wage Ratio (Women / Men)",
+    title = "Figure 5: Median Wage ratio of gender accross different races",
+    color = "Race"
+  ) +
+  theme_minimal()
+```
 
 
-Although higher levels of education can make wage gaps appear smaller, racial inequalities actually widen. Even with advanced degrees, Hispanic and Black men continue to earn disproportionately less than White men, showing that education alone does not eliminate racial wage gaps. The graphs also highlight persistent gendered inequality. At lower education levels, the wage distributions for men and women overlap less, while at the advanced degree level the densities overlap more, suggesting that more women with masters degrees are able to enter higher-paying fields despite a remaining gap. Additionally, Black and Hispanic groups display more similar wages between men and women compared to the White group. Taken together, these charts show that both racial and gender wage gaps persist, and that higher education alone is not enough to resolve them.
+### Median Wages Accross Gender, Race and Educational differences. 
 
-```{r, echo=FALSE}
-# Density plot of different education levels: 
+Figures 6 and 7 present kernel density plots of wage distributions by gender and race at two levels of educational attainment. Figure 6 displays wage distributions for individuals with less than a high school education, with separate facets for Black, Hispanic, and White workers and gender indicated by color. At this education level, there is minimal overlap between men’s and women’s wage distributions for Black and Hispanic workers and virtually no overlap for White workers, indicating substantial gender wage differences, particularly among White individuals with lower educational attainment. In contrast, Figure 7 shows wage distributions for individuals with advanced degrees, where there is considerably more overlap between men’s and women’s distributions across all racial groups. The greatest overlap appears among Black workers, suggesting more similar wages between men and women at higher education levels, while White and Hispanic workers continue to exhibit noticeable gender wage differences. Taken together, these figures suggest that higher education narrows gender wage disparities, but does not eliminate them, and that the extent of convergence varies across racial groups.
 
-#Less than High school
+```{r, echo = FALSE, fig.cap="Figure 6 shows kernel density plots of median hourly wages by gender and race for individuals with less than a high school education.", fig.alt="This figure contains three density plots, one each for White, Black, and Hispanic workers with less than a high school education. In each panel, men’s and women’s wage distributions are shown in different colors. There is little overlap between the distributions for Black and Hispanic workers and almost no overlap for White workers, indicating large gender wage differences at this education level." }
+
+# Less than High School
 less_hs_data <- cleaned_data_1 %>% 
-  filter(str_ends(demographic,"less_than_hs")) %>% 
+  filter(str_ends(demographic, "less_than_hs")) %>% 
   mutate(
     Race = case_when(
       str_starts(demographic, "white") ~ "White",
       str_starts(demographic, "black") ~ "Black",
       str_starts(demographic, "hispanic") ~ "Hispanic",
       TRUE ~ "NA"
-    )) %>% 
-  mutate(
+    ),
     Gender = case_when(
       str_detect(demographic, "_men_") ~ "Men",
       str_detect(demographic, "_women_") ~ "Women",
       TRUE ~ "NA"
-    )) %>%
-  filter(Race != "NA", Gender != "NA") 
+    )
+  ) %>%
+  filter(Race != "NA", Gender != "NA")
 
 ggplot(less_hs_data, aes(x = Wages, fill = Gender)) +
   geom_density(alpha = 0.5) +
-  facet_wrap(~Race) +
-  labs(title = "Less than high school wage gaps")
+  facet_wrap(~ Race) +
+  labs( title = "Figure 6: Wage distributions by gender and race for individuals with less than a high school education",
+    x = "Median Hourly Wages ($)",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
 
-#Advanced Degree
-advanced_data <-  cleaned_data_1 %>% 
-  filter(str_ends(demographic,"advanced_degree")) %>% 
+
+
+```{r, echo = FALSE, fig.cap = "Figure 7 presents kernel density plots of median hourly wages by gender and race for individuals with advanced degrees.", fig.alt = "This figure contains three density plots for White, Black, and Hispanic workers with advanced degrees. Men’s and women’s wage distributions overlap considerably more than in the less-than-high-school figure, with the greatest overlap observed among Black workers, suggesting more similar wages between genders at this education level."}
+# Advanced Degree
+advanced_data <- cleaned_data_1 %>% 
+  filter(str_ends(demographic, "advanced_degree")) %>% 
   mutate(
     Race = case_when(
       str_starts(demographic, "white") ~ "White",
       str_starts(demographic, "black") ~ "Black",
       str_starts(demographic, "hispanic") ~ "Hispanic",
       TRUE ~ "NA"
-    )) %>% 
-  mutate(
+    ),
     Gender = case_when(
       str_detect(demographic, "_men_") ~ "Men",
       str_detect(demographic, "_women_") ~ "Women",
       TRUE ~ "NA"
-    )) %>%
-  filter(Race != "NA", Gender != "NA") 
+    )
+  ) %>%
+  filter(Race != "NA", Gender != "NA")
 
 ggplot(advanced_data, aes(x = Wages, fill = Gender)) +
   geom_density(alpha = 0.5) +
-  facet_wrap(~Race)+
-  labs(title = "Advanced degree wage gaps")
-
+  facet_wrap(~ Race) +
+  labs( title = "Figure 7: Wage distributions by gender and race for individuals with advanced degrees",
+    x = "Median Hourly Wages ($)",
+    y = "Density"
+  ) +
+  theme_minimal()
 ```
+
+
 ## Conclusion
 
 This study demonstrates that wage inequality in the United States remains strongly shaped by the intersection of race, gender, and education. Across all educational levels, men consistently earned higher median wages than women, and White workers earned more than Black and Hispanic workers, reflecting persistent structural advantages. Higher educational attainment increases median wages for all groups, with advanced degrees yielding the largest returns. However, education alone does not eliminate disparities: even among advanced-degree holders, Black and Hispanic workers earn less than their White counterparts, and women earn less than men at the same educational level.
 Examining intersectional identities highlights that wage gaps are compounded by multiple factors. Women with advanced degrees have narrowed the gender wage gap, yet men still maintain a significant earnings advantage. Similarly, Black and Hispanic workers exhibit similar wage trends to each other but remain disadvantaged relative to White workers, revealing that racial inequalities persist across decades.
-These findings carry important policy implications. Reducing wage disparities requires interventions beyond education, including pay equity policies, affirmative action, and access to high-paying fields. Understanding the combined effects of race, gender, and education is critical for designing policies that promote fairness and economic inclusion. Education improves wages, but addressing structural inequalities is essential for achieving equitable labor market outcomes.
+Next steps for research should include expanding the dataset to include currently underrepresented identities (ex: Asian, Indigenous, non-binary, and transgender workers) and  explore additional determinants of wage disparities such as occupation, region, and industry and the intersectionality of these factors. Overall, understanding the combined effects of race, gender, and education is critical for an American economy that promote fairness and economic inclusion. Addressing all source of structural inequality is essential for achieving equitable labor market outcomes. 
 
+
+## References : 
+Blau, Francine D., and Lawrence M. Kahn. 2017. The Gender Wage Gap: Extent, Trends, and Explanations. Journal of Economic Literature.
+
+Crenshaw, Kimberlé. 1989. Demarginalizing the Intersection of Race and Sex. University of Chicago Legal Forum.
+
+Kaggle. (n.d.). Wages by education in the USA 1973–2022 [Data set]. Kaggle. https://www.kaggle.com/datasets/asaniczka/wages-by-education-in-the-usa-1973-2022
+
+Pager, Devah, and Hana Shepherd. 2008. The Sociology of Discrimination. Annual Review of Sociology.
+
+Wilson, William Julius. 1996. When Work Disappears.
 
